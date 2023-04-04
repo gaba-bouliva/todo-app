@@ -1,0 +1,52 @@
+body{
+  margin: 0px;
+  padding: 0px;
+  
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  height: 750px;
+  background-color: gray;
+}
+
+.header{
+  background-color: rgb(24, 83, 110);
+  height: 15%;
+  display: flex;
+  align-items: center;
+}
+
+.content {
+  height: 75%;
+  display: flex;
+  justify-content: column;
+}
+
+.left-content {
+  width: 30%;
+  height: 100%;
+  background-color: rgb(16, 26, 26);
+  border-right: 2px solid gray
+}
+
+.right-content{
+  width: 70%;
+ /* background-color: rgb(67, 72, 72); */
+ background-color:   rgb(16, 26, 26);
+}
+
+.title{
+  color: #fff;
+  font-family:'Courier New', Courier, monospace;
+}
+
+.logo{
+  margin-left: 20px
+}
+.projects-section, .todos-section{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
