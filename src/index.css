@@ -8,7 +8,7 @@ body{
   display: flex;
   flex-direction: column;
   height: 750px;
-  background-color: gray;
+  background-color: rgb(24, 83, 110);
 }
 
 .header{
@@ -40,8 +40,40 @@ body{
 .title{
   color: #fff;
   font-family:'Courier New', Courier, monospace;
+  font-size: 30px
 }
 
+.current-project {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+button.btn{
+  width: 80px;
+  height: 30px;
+}
+
+.edit-btn {
+  /* background-color: gray; */
+  /* color: #fff; */
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.proj-title{
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 50px;
+
+}
+
+.proj-description{
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+}
 .logo{
   margin-left: 20px
 }
