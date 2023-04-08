@@ -26,7 +26,8 @@ body{
 
 .left-content {
   width: 30%;
-  height: 100%;
+  max-height: 100%;
+  overflow-y: scroll;
   background-color: rgb(16, 26, 26);
   border-right: 2px solid gray
 }
@@ -51,8 +52,11 @@ body{
 }
 
 button.btn{
-  width: 80px;
-  height: 30px;
+  width: 100px;
+  height: 40px;
+  border-radius: 5%;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
 }
 
 .edit-btn {
@@ -71,7 +75,7 @@ button.btn{
 
 .proj-description{
   color: #fff;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 20px;
 }
 .logo{
@@ -81,4 +85,119 @@ button.btn{
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+ul.project-list {
+  color: #fff;
+  list-style-type: none;
+  font-family: Arial, sans-serif;;
+
+}
+
+.project{
+  font-size: 25px;
+  margin: 10px;
+  padding: 10px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.project:hover{
+  background-color: rgb(28, 45, 45);
+}
+
+ul.todo-list{
+  color: gray;
+}
+
+div.todo{
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 25px;
+  margin: 5px;
+  padding: 10px;
+  cursor: pointer;
+  border: 1px solid gray;
+  border-radius: 10px;
+  height: 30px;
+  font-family: Arial, sans-serif;
+}
+
+#checkbox{
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 1px solid #fff;
+  /* appearance: none;
+  -webkit-appearance: none;
+  outline: none; */
+  cursor: pointer;
+}
+
+div.todo> li{
+  list-style-type: none;
+}
+
+a.action{
+  margin-right: 10px;
+}
+
+.new-project, .new-todo{
+  display: flex;
+  justify-content: end;
+  margin-right: 10px;
+
+}
+
+.add-project-btn, .add-todo-btn {
+  
+  color: #fff;
+  cursor: pointer;
+  width: 150px;
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+}
+
+.add-project-btn > span, .add-todo-btn > span {
+  font-size: 40px;
+  font-weight: bold;
+  margin-right: 5px;
+  
+}
+
+.add-project-btn:hover, .add-todo-btn:hover{
+  background-color: green
+  
+}
+
+.new-todo-form{
+  display: flex;
+  justify-content: space-around;
+}
+
+input.todo-name {
+  width: 300px;
+}
+
+.due-date { 
+  width: 150px;
+}
+
+form > input{
+  height: 30px;
+}
+
+.save-btn{
+background-color: green;
+border: 1px solid green;
+color: #fff;
+}
+
+.cancel-btn { 
+  background-color: red;
+  border: 1px solid red;
+  color: #fff;
 }
