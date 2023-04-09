@@ -57,6 +57,14 @@ button.btn{
   border-radius: 5%;
   font-family: Arial, sans-serif;
   font-size: 18px;
+  cursor: pointer;
+}
+
+.form-btns{
+  
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 .edit-btn {
@@ -173,21 +181,27 @@ a.action{
   
 }
 
-.new-todo-form{
+.new-todo-form, .new-project-form{
   display: flex;
   justify-content: space-around;
+  display: none;
 }
 
-input.todo-name {
-  width: 300px;
+input.todo-name,  input.project-name, textarea{
+  width: 400px;
 }
 
 .due-date { 
   width: 150px;
 }
 
-form > input{
+form > input, textarea{
   height: 30px;
+  margin: 2px;
+  font-size: 18px;
+}
+textarea{
+  height: 50px;
 }
 
 .save-btn{
