@@ -27,21 +27,33 @@ console.log("List of projects", projectList);
    
 // }   
 
-function toggleNewProjectFormDisplay(){
+function toggleFormDisplay(event){
+  
+  const btnClassName = event.target.getAttribute('class')
+  let htmlForm = null;
 
-  let addNewProjectBtn = document.querySelector(".new-project-form");
+  if(btnClassName === 'add-project-btn'){
+    htmlForm = document.querySelector(".new-project-form");
+  }
 
-  if( addNewProjectBtn.style.display === 'none'){
-    addNewProjectBtn.style.display = '';
+  if(btnClassName === 'add-todo-btn'){
+    htmlForm = document.querySelector(".new-todo-form");
+  }
+
+
+
+  if( htmlForm.style.display === 'none'){
+    htmlForm.style.display = '';
   }else{
-    addNewProjectBtn.style.display = 'none'
+    htmlForm.style.display = 'none'
   }
 
 }
 
 
 function setupEventListeners(){
- document.querySelector(".add-project-btn").addEventListener('click', toggleNewProjectFormDisplay)
+ document.querySelector(".add-project-btn").addEventListener('click', toggleFormDisplay)
+ document.querySelector(".add-todo-btn").addEventListener('click', toggleFormDisplay)
 }
 
 setupEventListeners()
