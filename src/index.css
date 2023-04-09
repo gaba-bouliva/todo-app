@@ -184,7 +184,7 @@ a.action{
 .new-todo-form, .new-project-form{
   display: flex;
   justify-content: space-around;
-  display: none;
+
 }
 
 input.todo-name,  input.project-name, textarea{

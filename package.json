@@ -1,0 +1,27 @@
+{
+  "name": "todo-app",
+  "version": "1.0.0",
+  "description": "Todo Project",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "webpack --build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaba-bouliva/todo-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gaba-bouliva/todo-app/issues"
+  },
+  "homepage": "https://github.com/gaba-bouliva/todo-app#readme",
+  "dependencies": {
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.77.0",
+    "webpack-cli": "^5.0.1"
+  }
+}
