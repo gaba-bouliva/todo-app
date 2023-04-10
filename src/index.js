@@ -24,7 +24,7 @@ console.log("List of projects", projectList);
 //   let newTodo = new Todo(todo, projectId)  
 
 //   return newTodo.save(todoList)
-   
+  
 // }   
 
 function toggleFormDisplay(event){
@@ -40,14 +40,28 @@ function toggleFormDisplay(event){
     htmlForm = document.querySelector(".new-todo-form");
   }
 
-
-
   if( htmlForm.style.display === 'none'){
     htmlForm.style.display = '';
   }else{
     htmlForm.style.display = 'none'
   }
 
+}
+function loadTodos(){
+ // load todos to DOM 
+}
+
+function loadProjects(){
+
+  projectList.forEach((project) => {
+
+    let listItem  = document.createElement('li');
+    listItem.className = 'project';
+    listItem.innerText = project.title;
+    let projectList = document.querySelector('.project-list');
+    projectList.appendChild(listItem)
+    
+  })
 }
 
 
@@ -57,3 +71,6 @@ function setupEventListeners(){
 }
 
 setupEventListeners()
+loadProjects()
+
+
