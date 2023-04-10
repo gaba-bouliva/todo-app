@@ -34,10 +34,14 @@ function toggleFormDisplay(event){
 
   if(btnClassName === 'add-project-btn'){
     htmlForm = document.querySelector(".new-project-form");
+    let todoForm = document.querySelector(".new-todo-form");
+    todoForm.style.display = 'none'
   }
 
   if(btnClassName === 'add-todo-btn'){
     htmlForm = document.querySelector(".new-todo-form");
+    let projectForm = document.querySelector(".new-project-form");
+    projectForm.style.display = 'none'
   }
 
   if( htmlForm.style.display === 'none'){
@@ -47,8 +51,24 @@ function toggleFormDisplay(event){
   }
 
 }
+
 function loadTodos(){
- // load todos to DOM 
+  // <div class="todo">
+  //   <li ><input type="checkbox" id="checkbox" />Example todo </li>
+  //     <a class="action" href="/">Edit</a>
+  // </div>
+  todoList.forEach( (todo) => {
+
+    let todoItemDiv = document.createElement('div');
+    todoItemDiv.className = 'todo';
+
+    todoItemDiv.innerHTML = `<li ><input type="checkbox" id="checkbox" />
+                               ${todo.title}
+                               <a class="action" href="/">Edit</a>
+                               <a class="action" href="/">Delete</a>
+                               </li>`
+
+  })
 }
 
 function loadProjects(){
@@ -72,5 +92,6 @@ function setupEventListeners(){
 
 setupEventListeners()
 loadProjects()
+loadTodos()
 
 
