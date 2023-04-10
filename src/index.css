@@ -36,6 +36,7 @@ body{
   width: 70%;
  /* background-color: rgb(67, 72, 72); */
  background-color:   rgb(16, 26, 26);
+ overflow-y: scroll;
 }
 
 .title{
@@ -93,6 +94,7 @@ button.btn{
   width: 100%;
   display: flex;
   justify-content: center;
+
 }
 
 ul.project-list {
