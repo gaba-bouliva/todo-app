@@ -1,8 +1,9 @@
 import Project from "./Project.js";
 import Todo from "./Todo.js";
 
-let projectList = []
-let todoList = []
+let projectList = [];
+let todoList = [];
+let selectedProject = null;
 
 // Each project has a todo-list
 // Each Todo-list has one or more todos
@@ -15,7 +16,10 @@ function createProject(projects, title = "Default Project", description = "Defau
 }
 
 
-projectList = createProject(projectList) // creating a default project
+projectList = createProject(projectList) 
+selectedProject = projectList[0];
+projectList = createProject(projectList)
+projectList = createProject(projectList)
 
 console.log("List of projects", projectList);
 
@@ -72,22 +76,49 @@ function loadTodos(){
 }
 
 function loadProjects(){
+  
+  document.querySelector('.project-list').innerHTML = ''; // empty the ul list in DOM
 
   projectList.forEach((project) => {
-
+    
+    
     let listItem  = document.createElement('li');
     listItem.className = 'project';
     listItem.innerText = project.title;
-    let projectList = document.querySelector('.project-list');
-    projectList.appendChild(listItem)
+    listItem.addEventListener('click', () => {
+
+      setCurrentProject(project);
+      listItem.style.backgroundColor = 'rgb(28, 45, 45)';
+
+    })
+
+    if (selectedProject.id === project.id ){
+      listItem.style.backgroundColor = 'rgb(28, 45, 45)';
+    }else{
+      listItem.style.backgroundColor = '';
+    }
+
+    let projectListInDOM = document.querySelector('.project-list');
+    projectListInDOM.appendChild(listItem)
     
   })
 }
 
+function setCurrentProject (currentProject = projectList[0]){
+
+  selectedProject = currentProject;
+  loadProjects()
+  console.log("Current Project: ", currentProject);
+  document.querySelector('.project-title').innerText = currentProject.title;
+  document.querySelector('.project-description').innterText = currentProject.description;
+
+}
+
 
 function setupEventListeners(){
- document.querySelector(".add-project-btn").addEventListener('click', toggleFormDisplay)
- document.querySelector(".add-todo-btn").addEventListener('click', toggleFormDisplay)
+ document.querySelector('.add-project-btn').addEventListener('click', toggleFormDisplay)
+ document.querySelector('.add-todo-btn').addEventListener('click', toggleFormDisplay)
+
 }
 
 setupEventListeners()
