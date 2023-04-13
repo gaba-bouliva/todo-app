@@ -36,18 +36,21 @@ function toggleFormDisplay(event){
   const btnClassName = event.target.getAttribute('class')
   let htmlForm = null;
 
-  if(btnClassName === 'add-project-btn'){
+  if(btnClassName === 'add-project-btn' || btnClassName === 'add-project-icon'){
+    console.log("add project btn clicked.");
     htmlForm = document.querySelector(".new-project-form");
     let todoForm = document.querySelector(".new-todo-form");
     todoForm.style.display = 'none'
   }
 
-  if(btnClassName === 'add-todo-btn'){
+  if(btnClassName === 'add-todo-btn' || btnClassName === 'add-todo-icon'){
+    console.log("add todo btn clicked.");
     htmlForm = document.querySelector(".new-todo-form");
     let projectForm = document.querySelector(".new-project-form");
     projectForm.style.display = 'none'
   }
 
+  console.log("HtmlFormElement: ",htmlForm)
   if( htmlForm.style.display === 'none'){
     htmlForm.style.display = '';
   }else{
@@ -108,7 +111,7 @@ function setCurrentProject (currentProject = projectList[0]){
 
   selectedProject = currentProject;
   loadProjects()
-  console.log("Current Project: ", currentProject);
+  
   document.querySelector('.project-title').innerText = currentProject.title;
   document.querySelector('.project-description').innterText = currentProject.description;
 
