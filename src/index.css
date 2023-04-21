@@ -7,7 +7,7 @@ body{
 .container{
   display: flex;
   flex-direction: column;
-  height: 750px;
+  height: 100vh;
   background-color: rgb(24, 83, 110);
 }
 

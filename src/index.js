@@ -16,10 +16,8 @@ function createProject(projects, title = "Default Project", description = "Defau
 }
 
 
-projectList = createProject(projectList) 
+projectList = createProject([...projectList]) 
 selectedProject = projectList[0];
-projectList = createProject(projectList)
-projectList = createProject(projectList)
 
 console.log("List of projects", projectList);
 
@@ -31,33 +29,6 @@ console.log("List of projects", projectList);
   
 // }   
 
-function toggleFormDisplay(event){
-  
-  const btnClassName = event.target.getAttribute('class')
-  let htmlForm = null;
-
-  if(btnClassName === 'add-project-btn' || btnClassName === 'add-project-icon'){
-    console.log("add project btn clicked.");
-    htmlForm = document.querySelector(".new-project-form");
-    let todoForm = document.querySelector(".new-todo-form");
-    todoForm.style.display = 'none'
-  }
-
-  if(btnClassName === 'add-todo-btn' || btnClassName === 'add-todo-icon'){
-    console.log("add todo btn clicked.");
-    htmlForm = document.querySelector(".new-todo-form");
-    let projectForm = document.querySelector(".new-project-form");
-    projectForm.style.display = 'none'
-  }
-
-  console.log("HtmlFormElement: ",htmlForm)
-  if( htmlForm.style.display === 'none'){
-    htmlForm.style.display = '';
-  }else{
-    htmlForm.style.display = 'none'
-  }
-
-}
 
 function loadTodos(){
   // <div class="todo">
@@ -105,6 +76,7 @@ function loadProjects(){
     projectListInDOM.appendChild(listItem)
     
   })
+  
 }
 
 function setCurrentProject (currentProject = projectList[0]){
@@ -112,20 +84,68 @@ function setCurrentProject (currentProject = projectList[0]){
   selectedProject = currentProject;
   loadProjects()
   
-  document.querySelector('.project-title').innerText = currentProject.title;
-  document.querySelector('.project-description').innterText = currentProject.description;
+  document.querySelector('.project-title').innerHTML = `<strong>${currentProject.title}</strong>`;
+  document.querySelector('.project-description').innerHTML = `${currentProject.description}`;
 
 }
 
 
 function setupEventListeners(){
- document.querySelector('.add-project-btn').addEventListener('click', toggleFormDisplay)
- document.querySelector('.add-todo-btn').addEventListener('click', toggleFormDisplay)
+ document.querySelector('.add-project-btn').addEventListener('click', toggleProjectFormDisplay);
+ document.querySelector('.add-todo-btn').addEventListener('click', toggleTodoFormDisplay);
+ document.querySelector('.project-form').addEventListener('submit', handleAddProject);
+ document.querySelector('#close-project-form').addEventListener('click', toggleProjectFormDisplay);
+ document.querySelector('#close-todo-form').addEventListener('click', toggleTodoFormDisplay);
 
+}
+
+function handleAddProject(event){
+  event.preventDefault();
+  let title = event.target['projectName'].value.trim();
+  let description = event.target['projectDescription'].value;
+  console.log('title empty: ', title);
+  if(!title || !description){
+    throw "Please enter a valid title and description"
+  }
+
+  projectList = createProject([...projectList], title, description)
+  console.log('New projectList: ', projectList);
+  loadProjects()
+  event.target['projectName'].value = '';
+  event.target['projectDescription'].value = '';
+}
+
+function toggleProjectFormDisplay() {
+  
+  let projectForm = document.querySelector(".new-project-form");
+  let todoForm = document.querySelector(".new-todo-form");
+
+  
+  if(projectForm.style.display === ''){
+    projectForm.style.display = 'none'
+  }else if (projectForm.style.display === 'none') {
+    projectForm.style.display = ''
+  }
+  todoForm.style.display = 'none'
+
+}
+
+function toggleTodoFormDisplay() {
+  let todoForm = document.querySelector(".new-todo-form");
+  let projectForm = document.querySelector(".new-project-form");
+  
+  if(todoForm.style.display === ''){
+    todoForm.style.display = 'none'
+  }else if (todoForm.style.display === 'none') {
+    todoForm.style.display = ''
+  }
+  
+  projectForm.style.display = 'none'
 }
 
 setupEventListeners()
 loadProjects()
+setCurrentProject()
 loadTodos()
 
 
