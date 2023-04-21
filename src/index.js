@@ -21,13 +21,13 @@ selectedProject = projectList[0];
 
 console.log("List of projects", projectList);
 
-// function createTodo(todo, projectId){
-//   console.log("Creating todo...")
-//   let newTodo = new Todo(todo, projectId)  
-
-//   return newTodo.save(todoList)
+function createTodo(todoList, todo, projectId){
   
-// }   
+  let newTodo = new Todo(todo, projectId);
+  todoList.push(newTodo);
+  return todoList;
+  
+}   
 
 
 function loadTodos(){
@@ -35,17 +35,26 @@ function loadTodos(){
   //   <li ><input type="checkbox" id="checkbox" />Example todo </li>
   //     <a class="action" href="/">Edit</a>
   // </div>
+  document.querySelector('.todo-list').innerHTML = ''; // empty the content of the todo list in HTML DOM
+  
   todoList.forEach( (todo) => {
 
-    let todoItemDiv = document.createElement('div');
-    todoItemDiv.className = 'todo';
-
-    todoItemDiv.innerHTML = `<li ><input type="checkbox" id="checkbox" />
-                               ${todo.title}
-                               <a class="action" href="/">Edit</a>
-                               <a class="action" href="/">Delete</a>
-                               </li>`
-
+    if (todo.projectId === selectedProject.id){
+      let todoItemDiv = document.createElement('div');
+      todoItemDiv.className = 'todo';
+      
+      todoItemDiv.innerHTML = `<li ><input type="checkbox" id="checkbox" />
+                                 ${todo.title}</li>
+                                 <span>
+                                  <a class="action" href="/">Edit</a>
+                                  <a class="action" href="/">Delete</a>
+                                 </span>
+                                `
+  
+      document.querySelector('.todo-list').appendChild(todoItemDiv);      
+      
+    }
+    
   })
 }
 
@@ -82,7 +91,8 @@ function loadProjects(){
 function setCurrentProject (currentProject = projectList[0]){
 
   selectedProject = currentProject;
-  loadProjects()
+  loadProjects();
+  loadTodos();
   
   document.querySelector('.project-title').innerHTML = `<strong>${currentProject.title}</strong>`;
   document.querySelector('.project-description').innerHTML = `${currentProject.description}`;
@@ -94,8 +104,23 @@ function setupEventListeners(){
  document.querySelector('.add-project-btn').addEventListener('click', toggleProjectFormDisplay);
  document.querySelector('.add-todo-btn').addEventListener('click', toggleTodoFormDisplay);
  document.querySelector('.project-form').addEventListener('submit', handleAddProject);
+ document.querySelector('.todo-form').addEventListener('submit', handleAddTodo);
  document.querySelector('#close-project-form').addEventListener('click', toggleProjectFormDisplay);
  document.querySelector('#close-todo-form').addEventListener('click', toggleTodoFormDisplay);
+
+}
+
+function handleAddTodo(event){
+  event.preventDefault();
+  let title = event.target['todoName'].value;
+  let dueDate = event.target['dueDate'].value;
+  let todo = { title, dueDate};
+  todoList = createTodo([...todoList], todo, selectedProject.id);
+  console.log('New todoList: ', todoList);
+  loadTodos();
+  event.target['todoName'].value = '';
+  event.target['dueDate'].value = '';
+
 
 }
 
@@ -103,7 +128,7 @@ function handleAddProject(event){
   event.preventDefault();
   let title = event.target['projectName'].value.trim();
   let description = event.target['projectDescription'].value;
-  console.log('title empty: ', title);
+
   if(!title || !description){
     throw "Please enter a valid title and description"
   }
@@ -114,6 +139,8 @@ function handleAddProject(event){
   event.target['projectName'].value = '';
   event.target['projectDescription'].value = '';
 }
+
+
 
 function toggleProjectFormDisplay() {
   
