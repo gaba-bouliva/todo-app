@@ -27,19 +27,19 @@
             <div class="project-description"></div>
           </div>
           <div class="action-btn">
-            <button class="btn edit-btn">Edit</button>
+            <button class="btn edit-project-btn">Edit</button>
           </div>
         </div>
   
         <hr>
             <div class="new-project-form" style="display: none">
                <fieldset>
-                <legend><h2 style="color: #fff">New Project</h2></legend>
+                <legend><h2 id="project-form-title" style="color: #fff">New Project</h2></legend>
                 <form class="project-form">
                   <input class="project-name" type="text" name="projectName" placeholder="Project Name" required><br>
                   <textarea name="projectDescription" id="project-description" placeholder="Short Project Description" required></textarea>
-                  <div> 
-                    <button class="btn save-btn" type="submit">Save</button>
+                  <div class='project-action-btn'> 
+                    <button class="btn save-btn" id="project-save-btn" type="submit">Save</button>
                     <button type="button" class="btn cancel-btn" id="close-project-form">Cancel</button>
                   </div>
                 </form>

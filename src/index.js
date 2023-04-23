@@ -9,7 +9,7 @@ let selectedProject = null;
 // Each Todo-list has one or more todos
 // Each todo belongs to one todo-list
 
-function createProject(projects, title = "Default Project", description = "Default Project Description"){
+function createProject(projects, title = "Default Project", description = "Default Project Description") {
   let project = new Project(title, description)
   projects.push(project)
   return projects
@@ -30,16 +30,13 @@ function createTodo(todoList, todo, projectId){
 }   
 
 
-function loadTodos(){
-  // <div class="todo">
-  //   <li ><input type="checkbox" id="checkbox" />Example todo </li>
-  //     <a class="action" href="/">Edit</a>
-  // </div>
-  document.querySelector('.todo-list').innerHTML = ''; // empty the content of the todo list in HTML DOM
+function loadTodos() {
+
+  document.querySelector('.todo-list').innerHTML = ''; // empty the content of the unodered todo list in HTML DOM
   
   todoList.forEach( (todo) => {
 
-    if (todo.projectId === selectedProject.id){
+    if (todo.projectId === selectedProject.id) {
       let todoItemDiv = document.createElement('div');
       todoItemDiv.className = 'todo';
       
@@ -58,7 +55,7 @@ function loadTodos(){
   })
 }
 
-function loadProjects(){
+function loadProjects() {
   
   document.querySelector('.project-list').innerHTML = ''; // empty the ul list in DOM
 
@@ -75,7 +72,7 @@ function loadProjects(){
 
     })
 
-    if (selectedProject.id === project.id ){
+    if (selectedProject.id === project.id ) {
       listItem.style.backgroundColor = 'rgb(28, 45, 45)';
     }else{
       listItem.style.backgroundColor = '';
@@ -107,6 +104,7 @@ function setupEventListeners(){
  document.querySelector('.todo-form').addEventListener('submit', handleAddTodo);
  document.querySelector('#close-project-form').addEventListener('click', toggleProjectFormDisplay);
  document.querySelector('#close-todo-form').addEventListener('click', toggleTodoFormDisplay);
+ document.querySelector('.edit-project-btn').addEventListener('click', handleEditProject);
 
 }
 
@@ -140,6 +138,61 @@ function handleAddProject(event){
   event.target['projectDescription'].value = '';
 }
 
+function editProject(e) {
+  e.preventDefault();
+  let editedProjectForm = document.querySelector('.project-form');
+  
+  selectedProject.title =  editedProjectForm['projectName'].value;
+  selectedProject.description = editedProjectForm['projectDescription'].value;
+
+  setCurrentProject(selectedProject);
+  changeEditProjectFormToAddForm();
+  editedProjectForm.projectName.value = '';
+  editedProjectForm.projectDescription.value = '';
+  document.querySelector('.new-project-form').style.display = 'none'; // hide the form after editing project
+}
+
+function handleEditProject(){
+
+  let newProjectForm = document.querySelector('.project-form');
+  changeAddProjectFormToEditForm();
+  
+  newProjectForm['projectName'].value = selectedProject.title;
+  newProjectForm['projectDescription'].value = selectedProject.description;
+  
+}
+
+function changeAddProjectFormToEditForm() {
+  // setting the project form to edit currently selected project when submited
+
+  let newProjectForm = document.querySelector('.project-form');
+  document.querySelector('#project-form-title').innerText = 'Edit Project';
+
+  let btn = document.querySelector('#project-save-btn');
+
+  btn.innerText = 'Update';
+  newProjectForm.removeEventListener('submit', handleAddProject);
+  newProjectForm.addEventListener('submit', editProject);
+
+  document.querySelector('.new-project-form').style.display = ''; // show the add project form
+  document.querySelector('.new-todo-form').style.display = 'none'; // hide the todo form just in case it's open
+}
+
+function changeEditProjectFormToAddForm() {
+  // setting back the project form to it's default behavior(saving project when submited)
+
+  document.querySelector('#project-form-title').innerText = 'Save Project';
+  let btn = document.querySelector('#project-save-btn');
+  btn.innerText = 'Save';
+
+  let editedProjectForm = document.querySelector('.project-form');
+  editedProjectForm.removeEventListener('submit', editProject);
+  editedProjectForm.addEventListener('submit', handleAddProject);
+  editedProjectForm.projectName.value = '';
+  editedProjectForm.projectDescription.value = '';
+ 
+
+}
 
 
 function toggleProjectFormDisplay() {
@@ -147,6 +200,9 @@ function toggleProjectFormDisplay() {
   let projectForm = document.querySelector(".new-project-form");
   let todoForm = document.querySelector(".new-todo-form");
 
+  // if project form has been changed to edit a project reset it back 
+  // to it's default behavior (creating new projects)
+  
   
   if(projectForm.style.display === ''){
     projectForm.style.display = 'none'
@@ -154,7 +210,11 @@ function toggleProjectFormDisplay() {
     projectForm.style.display = ''
   }
   todoForm.style.display = 'none'
-
+  
+  if (document.querySelector('#project-form-title').innerText = 'Edit Project') {
+    changeEditProjectFormToAddForm();
+  }
+  
 }
 
 function toggleTodoFormDisplay() {
@@ -174,5 +234,3 @@ setupEventListeners()
 loadProjects()
 setCurrentProject()
 loadTodos()
-
-
