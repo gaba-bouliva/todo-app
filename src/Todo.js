@@ -12,4 +12,8 @@ export default class Todo {
   // edit(newTodo, todoList){
   //   // update todo
   // }
+
+  updateStatus(oldTodo, todoList){
+    console.log('Update todo...');
+  }
 }

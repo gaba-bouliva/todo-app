@@ -120,6 +120,11 @@ ul.todo-list{
   color: gray;
 }
 
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+}
+
 div.todo{
   display: flex;
   justify-content: space-between;
