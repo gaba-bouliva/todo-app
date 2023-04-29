@@ -4,7 +4,7 @@ export default class Todo {
   constructor(todo, projectId){
     this.title = todo.title,
     this.dueDate = todo.dueDate,
-    this.status = 'Incomplete',
+    this.completed = false,
     this.projectId = projectId,
     this.id = generateId()
   }

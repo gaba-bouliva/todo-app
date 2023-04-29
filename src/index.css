@@ -139,7 +139,7 @@ div.todo{
   font-family: Arial, sans-serif;
 }
 
-#checkbox{
+.checkbox{
   width: 25px;
   height: 25px;
   border-radius: 50%;
@@ -149,6 +149,10 @@ div.todo{
   -webkit-appearance: none;
   outline: none; */
   cursor: pointer;
+}
+
+div.todo-completed {
+  text-decoration: line-through;
 }
 
 div.todo> li{

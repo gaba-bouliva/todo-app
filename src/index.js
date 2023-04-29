@@ -32,7 +32,7 @@ function createTodo(todoList, todo, projectId){
 
 function loadTodos() {
 
-  document.querySelector('.todo-list').innerHTML = ''; // empty the content of the unodered todo list in HTML DOM
+  document.querySelector('.todo-list').innerHTML = ''; // empty the content of the unordered todo list in HTML DOM
 
   todoList.forEach( (todo) => {
 
@@ -41,24 +41,31 @@ function loadTodos() {
       todoItemDiv.className = 'todo-item';
       
       
-      todoItemDiv.className = 'todo';
+      //todoItemDiv.className = 'todo';
+      todoItemDiv.classList.add('todo');
+
+      
 
       todoItemDiv.innerHTML = `<li >
-                                  <input type="checkbox" id="checkbox"
-                                  ${ todo.status === 'Completed'? 'checked' : ''} />
+                                  <input type="checkbox" class="checkbox" id='status_${todo.id}'
+                                  ${ todo.completed ? "checked" : ""} />
                                   ${todo.title}                          
                                 </li>
+
                                  <span>
-                                  <a class="action edit-todo" id='edit_${todo.id}'>Edit</a>
-                                  <a class="action delete-todo" id='del_${todo.id}' >Delete</a>
+                                    <a class="action edit-todo" id='edit_${todo.id}' }>Edit</a>
+                                    <a class="action delete-todo" id='del_${todo.id}'>Delete</a>
                                  </span>
                                 `
-      
       document.querySelector('.todo-list').appendChild(todoItemDiv);
-      document.querySelector(`#edit_${todo.id}`).addEventListener('click', handleEditTodo);
-      document.querySelector(`#del_${todo.id}`).addEventListener('click', handleDeleteTodo);
+      document.querySelector(`#status_${todo.id}`).addEventListener('click', handleUpdateTodoStatus);
 
-       
+      if (todo.completed) {
+        todoItemDiv.classList.add('todo-completed');
+      }else{
+        document.querySelector(`#edit_${todo.id}`).addEventListener('click', handleEditTodo);
+        document.querySelector(`#del_${todo.id}`).addEventListener('click', handleDeleteTodo);
+      } 
       
     }
     
@@ -202,7 +209,7 @@ function editTodo(e){
 }
 
 
-function handleEditTodo(event){
+function handleEditTodo(event) {
 
   let id = event.target.getAttribute('id').split('_')[1] // remove 'edit_' from id
   let todo = todoList.find( todo => id === todo.id );
@@ -215,15 +222,36 @@ function handleEditTodo(event){
   
 }
 
-function handleDeleteTodo(event){
-  let id = event.target.getAttribute('id').split('_')[1];
+function handleDeleteTodo(event) {
+  let id = event.target.getAttribute('id').split('_')[1]; // remove 'del_' from id
 
   todoList = todoList.filter( todo => todo.id !== id)
   loadTodos()
 }
 
+function handleUpdateTodoStatus(event) {
+  // update todo status
+  let id = event.target.getAttribute('id').split('_')[1]; // remove 'status_' from id
+  let completed = event.target.checked;
 
-function changeEditTodoFormToAddTodoForm(){
+  let todo = todoList.find( todo => id === todo.id );
+
+
+  if (todo) {
+    todoList.map( todo => {
+
+      if (todo.id === id) {
+        todo.completed = completed;
+        loadTodos();
+      }
+
+    })
+  }else{
+    throw 'Invalid todo Id';
+  }
+}
+
+function changeEditTodoFormToAddTodoForm() {
 
   // setting back the todo form to it's default behavior(saving todo when submitted)
 
