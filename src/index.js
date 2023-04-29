@@ -55,7 +55,10 @@ function loadTodos() {
                                 `
       
       document.querySelector('.todo-list').appendChild(todoItemDiv);
-      document.querySelector(`#edit_${todo.id}`).addEventListener('click', handleEditTodo);   
+      document.querySelector(`#edit_${todo.id}`).addEventListener('click', handleEditTodo);
+      document.querySelector(`#del_${todo.id}`).addEventListener('click', handleDeleteTodo);
+
+       
       
     }
     
@@ -198,10 +201,11 @@ function editTodo(e){
   changeEditTodoFormToAddTodoForm();
 }
 
+
 function handleEditTodo(event){
 
   let id = event.target.getAttribute('id').split('_')[1] // remove 'edit_' from id
-  let todo = todoList.find( todo => id === todo.id )
+  let todo = todoList.find( todo => id === todo.id );
 
   if (todo) {
     changeAddTodoFormToEditForm(todo);
@@ -211,10 +215,17 @@ function handleEditTodo(event){
   
 }
 
+function handleDeleteTodo(event){
+  let id = event.target.getAttribute('id').split('_')[1];
+
+  todoList = todoList.filter( todo => todo.id !== id)
+  loadTodos()
+}
+
 
 function changeEditTodoFormToAddTodoForm(){
 
-  // setting back the todo form to it's default behavior(saving todo when submited)
+  // setting back the todo form to it's default behavior(saving todo when submitted)
 
   document.querySelector('#todo-form-title').innerText = 'Save Todo';
   let btn = document.querySelector('#todo-save-btn');
@@ -240,6 +251,7 @@ function changeAddTodoFormToEditForm(todo){
   btn.innerText = 'Update';
 
   // verify if the form used to edit the todo has an input with name todoId
+  // prevents multiple inputs with name todoId added to the dom
   if (!newTodoForm.todoId) {
     
     let todoIdInput =  document.createElement('input');
@@ -265,7 +277,7 @@ function changeAddTodoFormToEditForm(todo){
 
 
 function changeAddProjectFormToEditForm() {
-  // setting the project form to edit currently selected project when submited
+  // setting the project form to edit currently selected project when submitted
 
   let newProjectForm = document.querySelector('.project-form');
   document.querySelector('#project-form-title').innerText = 'Edit Project';
@@ -281,7 +293,7 @@ function changeAddProjectFormToEditForm() {
 }
 
 function changeEditProjectFormToAddForm() {
-  // setting back the project form to it's default behavior(saving project when submited)
+  // setting back the project form to it's default behavior(saving project when submitted)
 
   document.querySelector('#project-form-title').innerText = 'Save Project';
   let btn = document.querySelector('#project-save-btn');
