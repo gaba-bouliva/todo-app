@@ -1,25 +1,50 @@
 import Project from "./Project.js";
 import Todo from "./Todo.js";
+import { save, get} from './localStorage.js';
 
-let projectList = [];
-let todoList = [];
-let selectedProject = null;
+
 
 // Each project has a todo-list
 // Each Todo-list has one or more todos
 // Each todo belongs to one todo-list
 
-function createProject(projects, title = "Default Project", description = "Default Project Description") {
+function saveToLocalStorage(objectName, object) {
+  // objectName => 'todoList' || 'projectList' || 'selectedProject'
+  // object => todoList || projectList || selectedProject
+  localStorage.setItem(objectName, JSON.stringify(object) );
+}
+
+function getObjectFromLocalStorage(objectName) {
+  return JSON.parse(localStorage.getItem(objectName));
+}
+
+let projectList = getObjectFromLocalStorage('projectList');
+let todoList = getObjectFromLocalStorage('todoList');
+let selectedProject = getObjectFromLocalStorage('selectedProject');
+
+
+
+
+function createProject(projects = [], title = "Default Project", description = "Default Project Description") {
   let project = new Project(title, description)
   projects.push(project)
   return projects
 }
 
+if (!projectList){ 
+  // create default project if no project exists already
+  projectList = createProject();
+  selectedProject = projectList[0];
+}
 
-projectList = createProject([...projectList]) 
-selectedProject = projectList[0];
+if (!todoList){
+  todoList = [];
+}
 
-console.log("List of projects", projectList);
+saveToLocalStorage('projectList', projectList);
+saveToLocalStorage('selectedProject', selectedProject);
+
+console.log("List of projects", getObjectFromLocalStorage('projectList'));
 
 function createTodo(todoList, todo, projectId){
   
@@ -33,8 +58,12 @@ function createTodo(todoList, todo, projectId){
 function loadTodos() {
 
   document.querySelector('.todo-list').innerHTML = ''; // empty the content of the unordered todo list in HTML DOM
+  let todos = getObjectFromLocalStorage('todoList');
 
-  todoList.forEach( (todo) => {
+  if (!todos) {
+    return; 
+  }
+  todos.forEach( (todo) => {
 
     if (todo.projectId === selectedProject.id) {
       let todoItemDiv = document.createElement('div');
@@ -43,8 +72,6 @@ function loadTodos() {
       
       //todoItemDiv.className = 'todo';
       todoItemDiv.classList.add('todo');
-
-      
 
       todoItemDiv.innerHTML = `<li >
                                   <input type="checkbox" class="checkbox" id='status_${todo.id}'
@@ -75,8 +102,8 @@ function loadTodos() {
 function loadProjects() {
   
   document.querySelector('.project-list').innerHTML = ''; // empty the ul list in DOM
-
-  projectList.forEach((project) => {
+  let projects = getObjectFromLocalStorage('projectList');
+  projects.forEach((project) => {
     
     
     let listItem  = document.createElement('li');
@@ -103,8 +130,9 @@ function loadProjects() {
 }
 
 function setCurrentProject (currentProject = projectList[0]){
-
-  selectedProject = currentProject;
+  
+  saveToLocalStorage('selectedProject', currentProject);
+  selectedProject = getObjectFromLocalStorage('selectedProject');
   loadProjects();
   loadTodos();
   
@@ -131,7 +159,10 @@ function handleAddTodo(event){
   let title = event.target['todoName'].value;
   let dueDate = event.target['dueDate'].value;
   let todo = { title, dueDate};
-  todoList = createTodo([...todoList], todo, selectedProject.id);
+
+  let newTodoList = createTodo([...todoList], todo, selectedProject.id);
+  saveToLocalStorage('todoList', newTodoList);
+  todoList = getObjectFromLocalStorage('todoList');
   console.log('New todoList: ', todoList);
   loadTodos();
   event.target['todoName'].value = '';
@@ -149,7 +180,9 @@ function handleAddProject(event){
     throw "Please enter a valid title and description"
   }
 
-  projectList = createProject([...projectList], title, description)
+  let newProjectList = createProject([...projectList], title, description);
+  saveToLocalStorage('projectList', newProjectList);
+  projectList = getObjectFromLocalStorage('projectList');
   console.log('New projectList: ', projectList);
   loadProjects()
   event.target['projectName'].value = '';
@@ -162,8 +195,20 @@ function editProject(e) {
   
   selectedProject.title =  editedProjectForm['projectName'].value;
   selectedProject.description = editedProjectForm['projectDescription'].value;
-
   setCurrentProject(selectedProject);
+
+  let projects = getObjectFromLocalStorage('projectList');
+  let updatedProjects = projects.map( project => {
+
+    if (project.id === selectedProject.id ) {
+      project = {...selectedProject};
+    }
+    return project;
+  })
+ 
+  saveToLocalStorage('projectList', updatedProjects);
+  loadProjects()
+
   changeEditProjectFormToAddForm();
   editedProjectForm.projectName.value = '';
   editedProjectForm.projectDescription.value = '';
@@ -187,11 +232,12 @@ function editTodo(e){
   let todoId = e.target.todoId.value;
   let title = e.target.todoName.value;
   let dueDate = e.target.dueDate.value;
+  let todos = getObjectFromLocalStorage('todoList');
 
   if(todoId) {
     
-    for (let i = 0; i < todoList.length; i++) {
-      let currentTodo = todoList[i];
+    for (let i = 0; i < todos.length; i++) {
+      let currentTodo = todos[i];
 
       if ( currentTodo.id === todoId){
         currentTodo.title = title;
@@ -204,6 +250,7 @@ function editTodo(e){
     throw 'Invalid todo ID';
   }
 
+  saveToLocalStorage('todoList', todos)
   loadTodos();
   changeEditTodoFormToAddTodoForm();
 }
@@ -225,30 +272,34 @@ function handleEditTodo(event) {
 function handleDeleteTodo(event) {
   let id = event.target.getAttribute('id').split('_')[1]; // remove 'del_' from id
 
-  todoList = todoList.filter( todo => todo.id !== id)
+  let newTodoList = todoList.filter( todo => todo.id !== id)
+  saveToLocalStorage('todoList', newTodoList);
+  todoList = getObjectFromLocalStorage('todoList');
   loadTodos()
 }
 
 function handleUpdateTodoStatus(event) {
   // update todo status
+  
   let id = event.target.getAttribute('id').split('_')[1]; // remove 'status_' from id
   let completed = event.target.checked;
-
+  todoList = getObjectFromLocalStorage('todoList');
   let todo = todoList.find( todo => id === todo.id );
 
-
   if (todo) {
-    todoList.map( todo => {
+    todoList.forEach( todo => {
 
       if (todo.id === id) {
         todo.completed = completed;
-        loadTodos();
       }
 
     })
   }else{
     throw 'Invalid todo Id';
   }
+
+  saveToLocalStorage('todoList', todoList);
+  loadTodos();
 }
 
 function changeEditTodoFormToAddTodoForm() {
@@ -373,6 +424,9 @@ function toggleTodoFormDisplay() {
 }
 
 loadProjects()
-setCurrentProject()
+if(!selectedProject){
+  // set current project to default project if non is selected
+  setCurrentProject()
+}
 loadTodos()
 setupEventListeners()
