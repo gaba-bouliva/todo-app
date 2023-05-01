@@ -1,7 +1,5 @@
 import Project from "./Project.js";
 import Todo from "./Todo.js";
-import { save, get} from './localStorage.js';
-
 
 
 // Each project has a todo-list
@@ -68,7 +66,7 @@ function loadTodos() {
     if (todo.projectId === selectedProject.id) {
       let todoItemDiv = document.createElement('div');
       todoItemDiv.className = 'todo-item';
-      
+  
       
       //todoItemDiv.className = 'todo';
       todoItemDiv.classList.add('todo');
